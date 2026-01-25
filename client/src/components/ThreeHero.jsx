@@ -58,9 +58,7 @@ function BarChartWidget({ position, rotation, isDark }) {
     return (
         <group position={position} rotation={rotation}>
             {/* Base "Glass" Card */}
-            <mesh position={[0, -0.1, 0]} receiveShadow>
-                <roundedBoxGeometry args={[4.5, 0.2, 3, 4, 0.1]} /> {/* Using primitive for now to avoid Drei import issues if not installed, actually just box */}
-                <boxGeometry args={[4.5, 0.2, 3]} />
+            <RoundedBox args={[4.5, 0.2, 3]} radius={0.1} smoothness={4} position={[0, -0.1, 0]} receiveShadow>
                 <meshPhysicalMaterial
                     transmission={0.6}
                     thickness={1}
@@ -69,7 +67,7 @@ function BarChartWidget({ position, rotation, isDark }) {
                     transparent
                     opacity={0.8}
                 />
-            </mesh>
+            </RoundedBox>
 
             {/* Bars */}
             {data.map((item, i) => (
