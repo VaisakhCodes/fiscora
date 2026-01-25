@@ -82,7 +82,7 @@ function Loader() {
 }
 
 export default function ThreeHero() {
-    console.log("ThreeHero is rendering...");
+    console.log("ThreeHero rendering - attempt 5");
     const { theme } = useTheme();
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
