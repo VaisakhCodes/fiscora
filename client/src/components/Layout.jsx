@@ -23,9 +23,7 @@ export default function Layout() {
             {/* Sidebar */}
             <aside className="w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 hidden md:flex flex-col relative z-20 transition-colors duration-300">
                 <div className="h-20 flex items-center px-8 border-b border-slate-100 dark:border-slate-700/50">
-                    <div className="w-10 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/30 mr-3">
-                        <span className="text-white font-bold text-lg">₹</span>
-                    </div>
+                    <img src="/logo.png" alt="Fiscora" className="w-10 h-10 rounded-lg shadow-lg shadow-blue-500/30 mr-3" />
                     <span className="text-xl font-bold text-slate-900 dark:text-white">
                         Fiscora
                     </span>
@@ -83,9 +81,7 @@ export default function Layout() {
                 {/* Mobile Header (visible on small screens) */}
                 <header className="md:hidden bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 h-16 flex items-center px-4 justify-between">
                     <div className="flex items-center">
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-2">
-                            <span className="text-white font-bold">₹</span>
-                        </div>
+                        <img src="/logo.png" alt="Fiscora" className="w-8 h-8 rounded-lg mr-2" />
                         <span className="font-bold text-slate-800 dark:text-white">Fiscora</span>
                     </div>
                     <div className="flex items-center gap-2">

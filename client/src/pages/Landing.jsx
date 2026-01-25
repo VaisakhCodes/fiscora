@@ -23,9 +23,7 @@ export default function Landing() {
                 {/* Navbar */}
                 <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
                     <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">
-                            ₹
-                        </div>
+                        <img src="/logo.png" alt="Fiscora Logo" className="w-10 h-10 rounded-xl shadow-lg shadow-blue-500/20" />
                         <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Fiscora</span>
                     </div>
                     <div className="flex items-center gap-4">
