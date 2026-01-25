@@ -1,4 +1,14 @@
-import { Link } from 'react-router-dom';
+import ThreeHero from '../components/ThreeHero';
+
+// ... (existing imports, but ThreeHero is added)
+
+// ...
+
+<div className="lg:w-1/2 h-[500px] lg:h-[600px] relative w-full">
+    <div className="absolute inset-0">
+        <ThreeHero />
+    </div>
+</div>
 import { ArrowRight, CheckCircle, Smartphone, PieChart } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 
@@ -60,18 +70,14 @@ export default function Landing() {
                         </div>
                     </div>
 
-                    <div className="lg:w-1/2 relative perspective-1000">
-                        <div className="relative z-10 transform transition-transform duration-700 hover:scale-[1.02] hover:rotate-1">
-                            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[2.5rem] blur opacity-30 animate-pulse"></div>
-                            <img
-                                src="/fiscora_dashboard_mockup.png"
-                                alt="Fiscora Dashboard Interface"
-                                className="relative rounded-[2rem] shadow-2xl border border-slate-200 dark:border-white/10 w-full object-cover bg-white dark:bg-transparent"
-                            />
+                    <div className="lg:w-1/2 h-[400px] lg:h-[600px] relative w-full perspective-1000">
+                        {/* 3D Hero Scene */}
+                        <div className="absolute inset-0 z-10">
+                            <ThreeHero />
                         </div>
 
-                        {/* Decorative Background Blobs */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-200/50 dark:bg-blue-600/20 rounded-full blur-[100px] -z-10"></div>
+                        {/* Decorative Background for fallback/depth */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-200/20 dark:bg-blue-600/10 rounded-full blur-[100px] -z-10"></div>
                     </div>
                 </header>
 
