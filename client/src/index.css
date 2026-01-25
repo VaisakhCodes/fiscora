@@ -8,6 +8,8 @@
   body {
     @apply h-full bg-slate-50 text-slate-900 antialiased;
     font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   #root {
