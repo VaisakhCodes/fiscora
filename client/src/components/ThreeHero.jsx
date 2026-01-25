@@ -1,4 +1,5 @@
-```
+
+// 3D Hero Component with Suspense Fix
 import React, { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Environment, ContactShadows, Text, useGLTF } from '@react-three/drei';
@@ -97,23 +98,23 @@ export default function ThreeHero() {
                 className="rounded-3xl"
             >
                 <Suspense fallback={<Loader />}>
-                     {/* Lighting Environment */}
+                    {/* Lighting Environment */}
                     <ambientLight intensity={isDark ? 0.4 : 0.8} />
                     <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
                     <pointLight position={[-10, -10, -10]} intensity={isDark ? 0.5 : 1} color={isDark ? "#4f46e5" : "#60a5fa"} />
-                    
+
                     {/* Environment Reflection Map */}
                     <Environment preset={isDark ? "city" : "studio"} blur={0.8} />
 
                     {/* Floating Objects Group */}
                     <group scale={responsiveScale}>
                         {/* Center Hero Object - Blue/Primary */}
-                        <FloatingShape 
-                            position={[0, 0, 0]} 
-                            rotation={[0, 0, 0]} 
-                            scale={1.5} 
-                            color="#3b82f6" 
-                            speed={1.5} 
+                        <FloatingShape
+                            position={[0, 0, 0]}
+                            rotation={[0, 0, 0]}
+                            scale={1.5}
+                            color="#3b82f6"
+                            speed={1.5}
                             geometryType="icosahedron"
                             isDark={isDark}
                         />
@@ -121,7 +122,7 @@ export default function ThreeHero() {
                         {/* Surrounding Objects - Various colors/shapes */}
                         <FloatingShape position={[-3, 2, -2]} rotation={[1, 2, 0]} scale={0.8} color="#8b5cf6" speed={2} geometryType="torus" isDark={isDark} />
                         <FloatingShape position={[3.5, -1, -3]} rotation={[2, 1, 0]} scale={0.9} color="#10b981" speed={1.2} geometryType="dodecahedron" isDark={isDark} />
-                        
+
                         {/* Background Distant Objects for Depth */}
                         <FloatingShape position={[-2, -3, -5]} rotation={[0, 1, 0]} scale={0.5} color="#6366f1" speed={0.8} geometryType="icosahedron" isDark={isDark} />
                         <FloatingShape position={[4, 3, -6]} rotation={[1, 0, 0]} scale={0.6} color="#f59e0b" speed={1} geometryType="dodecahedron" isDark={isDark} />
@@ -131,12 +132,12 @@ export default function ThreeHero() {
                     <Rig />
 
                     {/* Soft Shadows for grounding */}
-                    <ContactShadows 
-                        position={[0, -3.5, 0]} 
-                        opacity={0.6} 
-                        scale={20} 
-                        blur={2} 
-                        far={4.5} 
+                    <ContactShadows
+                        position={[0, -3.5, 0]}
+                        opacity={0.6}
+                        scale={20}
+                        blur={2}
+                        far={4.5}
                         color={isDark ? "#000000" : "#d1d5db"}
                     />
                 </Suspense>
@@ -144,4 +145,4 @@ export default function ThreeHero() {
         </div>
     );
 }
-```
+
