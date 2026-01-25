@@ -1,71 +1,123 @@
-
-// 3D Hero Component with Suspense Fix
-import React, { useRef, useMemo, Suspense } from 'react';
+// 3D Hero Component - Analytics Dashboard Theme
+import React, { useRef, useMemo, Suspense, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float, Environment, ContactShadows, Text, useGLTF } from '@react-three/drei';
+import { Environment, ContactShadows, Float, Text, RoundedBox } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTheme } from '../context/ThemeContext';
 
 /**
- * Geometric shape with Glassmorphism material
+ * A single bar in the 3D Bar Chart
  */
-function FloatingShape({ position, rotation, scale, color, speed, geometryType = 'dodecahedron', isDark }) {
+function ChartBar({ position, height, color, index, isDark }) {
     const mesh = useRef();
+    const targetHeight = useRef(height);
+    const [currentHeight, setCurrentHeight] = useState(0);
 
-    // Material configuration for that "premium glass" look
-    const materialProps = {
-        transmission: 0.95, // Glass-like transmission
-        thickness: 0.2,     // Refraction thickness
-        roughness: 0.1,     // Glossy
-        metalness: 0.1,     // Slight metal look
-        clearcoat: 1,
-        clearcoatRoughness: 0.1,
-        color: new THREE.Color(color).convertSRGBToLinear(),
-        attenuationDistance: 0.5,
-        attenuationColor: new THREE.Color(isDark ? '#ffffff' : '#000000').convertSRGBToLinear(),
-    };
-
-    useFrame((state) => {
-        const t = state.clock.getElapsedTime();
-        // Subtle extra rotation on top of Float
-        mesh.current.rotation.x = rotation[0] + Math.cos(t / 4 * speed) / 8;
-        mesh.current.rotation.y = rotation[1] + Math.sin(t / 4 * speed) / 8;
-        mesh.current.rotation.z = rotation[2] + Math.sin(t / 4 * speed) / 8;
+    useFrame((state, delta) => {
+        // Animate height growth on mount
+        if (mesh.current) {
+            // Simple lerp for growth animation
+            if (currentHeight < targetHeight.current) {
+                const newHeight = THREE.MathUtils.lerp(currentHeight, targetHeight.current, delta * 3);
+                setCurrentHeight(newHeight);
+                mesh.current.scale.y = newHeight;
+                // Adjust position y so it grows from bottom
+                mesh.current.position.y = position[1] + newHeight / 2;
+            }
+        }
     });
 
-    let Geometry;
-    switch (geometryType) {
-        case 'sphere': Geometry = THREE.SphereGeometry; break;
-        case 'box': Geometry = THREE.BoxGeometry; break;
-        case 'torus': Geometry = THREE.TorusGeometry; break;
-        case 'icosahedron': Geometry = THREE.IcosahedronGeometry; break;
-        default: Geometry = THREE.DodecahedronGeometry;
-    }
+    const materialProps = {
+        color: new THREE.Color(color).convertSRGBToLinear(),
+        roughness: 0.2,
+        metalness: 0.6,
+        clearcoat: 0.5,
+    };
 
     return (
-        <Float speed={speed} rotationIntensity={1} floatIntensity={2} floatingRange={[-0.2, 0.2]}>
-            <mesh ref={mesh} position={position} scale={scale} castShadow receiveShadow>
-                {geometryType === 'torus' ? (
-                    <torusGeometry args={[0.7, 0.2, 16, 32]} />
-                ) : geometryType === 'box' ? (
-                    <roundedBoxGeometry args={[1, 1, 1, 4, 0.1]} /> // Requires drei's RoundedBox but we'll stick to simple primitives for speed
-                ) : (
-                    <dodecahedronGeometry args={[1, 0]} />
-                )}
-                <meshPhysicalMaterial {...materialProps} />
-            </mesh>
-        </Float>
+        <mesh ref={mesh} position={[position[0], position[1], position[2]]} castShadow receiveShadow>
+            <boxGeometry args={[0.5, 1, 0.5]} />
+            <meshStandardMaterial {...materialProps} />
+        </mesh>
     );
 }
 
 /**
- * Interactive Camera Rig
- * Moves the camera slightly based on mouse position for parallax effect
+ * 3D Bar Chart Widget
  */
+function BarChartWidget({ position, rotation, isDark }) {
+    // Data representation: height and color
+    const data = [
+        { h: 2, c: '#3b82f6' }, // Blue
+        { h: 3.5, c: '#8b5cf6' }, // Purple
+        { h: 1.5, c: '#10b981' }, // Green
+        { h: 4, c: '#f59e0b' }, // Amber
+        { h: 2.8, c: '#ef4444' }, // Red
+    ];
+
+    return (
+        <group position={position} rotation={rotation}>
+            {/* Base "Glass" Card */}
+            <mesh position={[0, -0.1, 0]} receiveShadow>
+                <roundedBoxGeometry args={[4.5, 0.2, 3, 4, 0.1]} /> {/* Using primitive for now to avoid Drei import issues if not installed, actually just box */}
+                <boxGeometry args={[4.5, 0.2, 3]} />
+                <meshPhysicalMaterial
+                    transmission={0.6}
+                    thickness={1}
+                    roughness={0.2}
+                    color={isDark ? '#1e293b' : '#ffffff'}
+                    transparent
+                    opacity={0.8}
+                />
+            </mesh>
+
+            {/* Bars */}
+            {data.map((item, i) => (
+                <ChartBar
+                    key={i}
+                    position={[-1.6 + (i * 0.8), 0, 0]}
+                    height={item.h}
+                    color={item.c}
+                    index={i}
+                    isDark={isDark}
+                />
+            ))}
+        </group>
+    );
+}
+
+/**
+ * Floating Donut / Pie Chart abstraction
+ */
+function DonutStat({ position, rotation, color, isDark }) {
+    const mesh = useRef();
+
+    useFrame((state) => {
+        mesh.current.rotation.x += 0.01;
+        mesh.current.rotation.y += 0.01;
+    });
+
+    return (
+        <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+            <group position={position} rotation={rotation}>
+                <mesh ref={mesh} castShadow>
+                    <torusGeometry args={[0.8, 0.25, 16, 32]} />
+                    <meshStandardMaterial
+                        color={new THREE.Color(color).convertSRGBToLinear()}
+                        roughness={0.1}
+                        metalness={0.5}
+                        emissive={new THREE.Color(color)}
+                        emissiveIntensity={0.2}
+                    />
+                </mesh>
+            </group>
+        </Float>
+    );
+}
+
 function Rig() {
     const { camera, mouse } = useThree();
     const vec = new THREE.Vector3();
-
     useFrame(() => {
         camera.position.lerp(vec.set(mouse.x * 2, mouse.y * 1, camera.position.z), 0.05);
         camera.lookAt(0, 0, 0);
@@ -75,75 +127,66 @@ function Rig() {
 function Loader() {
     return (
         <mesh>
-            <sphereGeometry args={[0.5, 32, 32]} />
+            <boxGeometry args={[1, 1, 1]} />
             <meshBasicMaterial color="gray" wireframe />
         </mesh>
     );
 }
 
 export default function ThreeHero() {
-    console.log("ThreeHero rendering - attempt 5");
+    console.log("ThreeHero Analytics Redesign rendering...");
     const { theme } = useTheme();
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-    // Responsive scaling factor
-    const responsiveScale = window.innerWidth < 768 ? 0.6 : 1;
+    const responsiveScale = window.innerWidth < 768 ? 0.65 : 1.1;
 
     return (
         <div className="w-full h-full relative cursor-move">
             <Canvas
                 shadows
-                dpr={[1, 2]} // Optimization for high DPI screens
-                camera={{ position: [0, 0, 8], fov: 45 }}
+                dpr={[1, 2]}
+                camera={{ position: [0, 2, 7], fov: 40 }}
                 gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
                 className="rounded-3xl"
             >
                 <Suspense fallback={<Loader />}>
-                    {/* Lighting Environment */}
-                    <ambientLight intensity={isDark ? 0.4 : 0.8} />
-                    <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
-                    <pointLight position={[-10, -10, -10]} intensity={isDark ? 0.5 : 1} color={isDark ? "#4f46e5" : "#60a5fa"} />
+                    {/* Dynamic Lighting */}
+                    <ambientLight intensity={isDark ? 0.4 : 0.7} />
+                    <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
+                    <pointLight position={[-5, 5, -5]} intensity={1} color={isDark ? "#4f46e5" : "#60a5fa"} />
 
-                    {/* Environment Reflection Map */}
-                    <Environment preset={isDark ? "city" : "studio"} blur={0.8} />
+                    <Environment preset={isDark ? "city" : "studio"} blur={0.6} />
 
-                    {/* Floating Objects Group */}
                     <group scale={responsiveScale}>
-                        {/* Center Hero Object - Blue/Primary */}
-                        <FloatingShape
-                            position={[0, 0, 0]}
-                            rotation={[0, 0, 0]}
-                            scale={1.5}
-                            color="#3b82f6"
-                            speed={1.5}
-                            geometryType="icosahedron"
-                            isDark={isDark}
-                        />
+                        {/* Main Bar Chart Widget */}
+                        <Float rotationIntensity={0.2} floatIntensity={0.5} speed={1.5}>
+                            <BarChartWidget position={[0, -1, 0]} rotation={[0.3, -0.3, 0]} isDark={isDark} />
+                        </Float>
 
-                        {/* Surrounding Objects - Various colors/shapes */}
-                        <FloatingShape position={[-3, 2, -2]} rotation={[1, 2, 0]} scale={0.8} color="#8b5cf6" speed={2} geometryType="torus" isDark={isDark} />
-                        <FloatingShape position={[3.5, -1, -3]} rotation={[2, 1, 0]} scale={0.9} color="#10b981" speed={1.2} geometryType="dodecahedron" isDark={isDark} />
+                        {/* Floating "Stats" Donuts */}
+                        <DonutStat position={[-3, 1, -1]} rotation={[0, 0, 0]} color="#10b981" />
+                        <DonutStat position={[3, 2, -2]} rotation={[1, 0, 0]} color="#8b5cf6" />
 
-                        {/* Background Distant Objects for Depth */}
-                        <FloatingShape position={[-2, -3, -5]} rotation={[0, 1, 0]} scale={0.5} color="#6366f1" speed={0.8} geometryType="icosahedron" isDark={isDark} />
-                        <FloatingShape position={[4, 3, -6]} rotation={[1, 0, 0]} scale={0.6} color="#f59e0b" speed={1} geometryType="dodecahedron" isDark={isDark} />
+                        {/* Background Floating Elements for Depth */}
+                        <Float speed={1} rotationIntensity={1} floatIntensity={1}>
+                            <mesh position={[2.5, -2, -3]} receiveShadow>
+                                <sphereGeometry args={[0.4, 32, 32]} />
+                                <meshStandardMaterial color="#3b82f6" roughness={0.4} />
+                            </mesh>
+                        </Float>
                     </group>
 
-                    {/* Interactive Rig */}
                     <Rig />
 
-                    {/* Soft Shadows for grounding */}
                     <ContactShadows
-                        position={[0, -3.5, 0]}
-                        opacity={0.6}
-                        scale={20}
-                        blur={2}
-                        far={4.5}
-                        color={isDark ? "#000000" : "#d1d5db"}
+                        position={[0, -3, 0]}
+                        opacity={0.4}
+                        scale={15}
+                        blur={2.5}
+                        far={5}
+                        color={isDark ? "#000000" : "#9ca3af"}
                     />
                 </Suspense>
             </Canvas>
         </div>
     );
 }
-
