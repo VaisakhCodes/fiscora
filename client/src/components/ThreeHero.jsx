@@ -82,6 +82,7 @@ function Loader() {
 }
 
 export default function ThreeHero() {
+    console.log("ThreeHero is rendering...");
     const { theme } = useTheme();
     const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
