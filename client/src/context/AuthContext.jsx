@@ -30,7 +30,10 @@ export const AuthProvider = ({ children }) => {
             setUser(user);
             return { success: true };
         } catch (error) {
-            const msg = error.response?.data?.message || error.response?.data?.error || 'Login failed';
+            let msg = error.response?.data?.message || error.response?.data?.error || 'Login failed';
+            if (typeof msg === 'object') {
+                msg = msg.message || JSON.stringify(msg);
+            }
             return { success: false, error: msg };
         }
     };
@@ -46,7 +49,10 @@ export const AuthProvider = ({ children }) => {
             setUser(user);
             return { success: true };
         } catch (error) {
-            const msg = error.response?.data?.message || error.response?.data?.error || 'Registration failed';
+            let msg = error.response?.data?.message || error.response?.data?.error || 'Registration failed';
+            if (typeof msg === 'object') {
+                msg = msg.message || JSON.stringify(msg);
+            }
             return { success: false, error: msg };
         }
     };
