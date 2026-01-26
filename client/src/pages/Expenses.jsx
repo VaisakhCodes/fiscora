@@ -11,7 +11,7 @@ export default function Expenses() {
     const [editingExpense, setEditingExpense] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+    const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '' : 'http://localhost:3000');
 
     const fetchData = useCallback(async () => {
         try {
