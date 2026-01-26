@@ -48,6 +48,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'API is working!' });
+});
+
 // Only skip listen if we are in Vercel Serverless context
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   app.listen(PORT, () => {
