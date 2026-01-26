@@ -11,10 +11,12 @@ export default function Expenses() {
     const [editingExpense, setEditingExpense] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
     const fetchData = useCallback(async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/expenses`);
+            const res = await axios.get(`${API_URL}/api/expenses`);
             setExpenses(res.data);
         } catch (error) {
             console.error("Failed to fetch expenses", error);
@@ -29,7 +31,7 @@ export default function Expenses() {
 
     const handleAdd = async (data) => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/expenses`, data);
+            await axios.post(`${API_URL}/api/expenses`, data);
             setIsModalOpen(false);
             fetchData();
         } catch (error) {
@@ -39,7 +41,7 @@ export default function Expenses() {
 
     const handleEdit = async (data) => {
         try {
-            await axios.put(`${import.meta.env.VITE_API_URL}/api/expenses/${editingExpense.id}`, data);
+            await axios.put(`${API_URL}/api/expenses/${editingExpense.id}`, data);
             setEditingExpense(null);
             setIsModalOpen(false);
             fetchData();
@@ -51,7 +53,7 @@ export default function Expenses() {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure?")) return;
         try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/api/expenses/${id}`);
+            await axios.delete(`${API_URL}/api/expenses/${id}`);
             fetchData();
         } catch (error) {
             alert("Failed to delete expense");

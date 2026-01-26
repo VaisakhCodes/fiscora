@@ -12,12 +12,14 @@ export default function Dashboard() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingExpense, setEditingExpense] = useState(null);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
     const fetchData = useCallback(async () => {
         try {
             setLoading(true);
             const [expRes, statsRes] = await Promise.all([
-                axios.get(`${import.meta.env.VITE_API_URL}/api/expenses`),
-                axios.get(`${import.meta.env.VITE_API_URL}/api/expenses/stats`)
+                axios.get(`${API_URL}/api/expenses`),
+                axios.get(`${API_URL}/api/expenses/stats`)
             ]);
             setExpenses(expRes.data);
             setStats(statsRes.data.byCategory || {});
@@ -34,7 +36,7 @@ export default function Dashboard() {
 
     const handleAdd = async (data) => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/expenses`, data);
+            await axios.post(`${API_URL}/api/expenses`, data);
             setIsModalOpen(false);
             fetchData();
         } catch (error) {
@@ -44,7 +46,7 @@ export default function Dashboard() {
 
     const handleEdit = async (data) => {
         try {
-            await axios.put(`${import.meta.env.VITE_API_URL}/api/expenses/${editingExpense.id}`, data);
+            await axios.put(`${API_URL}/api/expenses/${editingExpense.id}`, data);
             setEditingExpense(null);
             setIsModalOpen(false);
             fetchData();
@@ -56,7 +58,7 @@ export default function Dashboard() {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure?")) return;
         try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/api/expenses/${id}`);
+            await axios.delete(`${API_URL}/api/expenses/${id}`);
             fetchData();
         } catch (error) {
             alert("Failed to delete expense");
