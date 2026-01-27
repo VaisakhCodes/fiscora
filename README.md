@@ -1,104 +1,30 @@
 # Fiscora - Personal Finance Dashboard
 
-Fiscora is a modern, full-stack expense tracking application designed to help you master your financial future. It features a secure REST API backend and a responsive, dark-mode capable React frontend.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FVaisakhCodes%2Ffiscora)
 
-## 📋 Prerequisites
+Master your financial future with Fiscora. Track spending, visualize habits, and achieve freedom with our intelligent expense tracker designed for the modern era.
 
-Before you begin, ensure you have the following installed on your machine:
-*   **Node.js** (v18 or higher)
-*   **npm** (Node Package Manager)
-*   **Git**
+## Features
 
----
+-   **Dashboard Overview**: See your total balance, income, and expenses at a glance.
+-   **Expense Tracking**: Add and categorize your daily expenses easily.
+-   **Visual Analytics**: View your spending habits with interactive charts.
+-   **Dark Mode**: Sleek UI with dark mode support.
+-   **Secure Authentication**: User registration and login system.
 
-## 🚀 Quick Start Guide
+## Tech Stack
 
-This project is divided into two main folders:
-*   `server` - The backend API (Node.js, Express, Prisma, SQLite/Postgres)
-*   `client` - The frontend application (React, Vite, Tailwind CSS)
+-   **Frontend**: React, Vite, TailwindCSS
+-   **Backend**: Node.js, Express
+-   **Database**: PostgreSQL (via Prisma)
+-   **Deployment**: Vercel
 
-### 1. Backend Setup (Server)
+## Setup
 
-Navigate to the server directory and set up the API.
+1.  Clone the repository.
+2.  Run `npm install:all` to install dependencies.
+3.  Set up `.env` files in `server` and `client`.
+4.  Run `npm run dev` to start both servers.
 
-```bash
-cd server
-```
-
-**Step 1: Install Dependencies**
-```bash
-npm install
-```
-
-**Step 2: Configure Environment Variables**
-Create a `.env` file in the `server` directory. Add variables line-by-line in `KEY=VALUE` format:
-```env
-PORT=3000
-DATABASE_URL="file:./dev.db"
-JWT_SECRET="your_super_secret_jwt_key_change_this"
-```
-*   `DATABASE_URL`: Defaults to a local SQLite file for development.
-*   `JWT_SECRET`: Used to sign authentication tokens. Change this to a secure random string.
-
-**Step 3: Database Migration**
-Initialize the database using Prisma:
-```bash
-npx prisma migrate dev --name init
-```
-
-**Step 4: Start the Server**
-```bash
-# Development mode (auto-restarts on changes)
-npm run dev
-
-# OR Production mode
-npm start
-```
-The server should now be running on `http://localhost:3000`.
-
----
-
-### 2. Frontend Setup (Client)
-
-Open a new terminal window, navigate to the client directory.
-
-```bash
-cd client
-```
-
-**Step 1: Install Dependencies**
-```bash
-npm install
-```
-
-**Step 2: Start the Development Server**
-```bash
-npm run dev
-```
-
-The application will start, typically at `http://localhost:5173`. Open this URL in your browser to inspect the app.
-
----
-
-## 🛠️ Features & Usage
-
-1.  **Authentication**: Register a new account or log in with existing credentials.
-2.  **Dashboard**: View your total monthly spend and categorical breakdown chart.
-3.  **Expenses**: Add, Edit, Filter, and Delete individual expense records.
-4.  **Theme System**: Toggle between Light, Dark, and System themes using the icon on the home page.
-5.  **Responsive**: Works seamlessly on Desktop, Tablet, and Mobile.
-
----
-
-## ⚠️ Troubleshooting
-
-**"No framework detected" on Vercel**
-*   Ensure you select the `client` directory as the Root Directory in Vercel project settings, as that is where the frontend code lives.
-*   Project names on Vercel must be lowercase (e.g., `fiscora`).
-
-**CORS Errors**
-*   If the frontend cannot talk to the backend, ensure the `server` is running on port 3000.
-*   Check that no other service is blocking `http://localhost:3000`.
-
-**Prisma Errors**
-*   If you see database errors, try deleting the `server/prisma/dev.db` folder and running `npx prisma migrate dev` again to reset the database.
+## Deployment Status
+- Vercel Root Directory Fix Applied.
