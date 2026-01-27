@@ -148,12 +148,13 @@ export default function ThreeHero() {
                 className="rounded-3xl"
             >
                 <Suspense fallback={<Loader />}>
-                    {/* Dynamic Lighting */}
-                    <ambientLight intensity={isDark ? 0.4 : 0.7} />
-                    <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={1.5} castShadow shadow-mapSize={[512, 512]} />
-                    <pointLight position={[-5, 5, -5]} intensity={1} color={isDark ? "#4f46e5" : "#60a5fa"} />
+                    {/* Dynamic Lighting - Boosted for "No Environment" setup */}
+                    <ambientLight intensity={isDark ? 1.5 : 2.0} />
+                    <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={2} castShadow shadow-mapSize={[512, 512]} />
+                    <pointLight position={[-5, 5, -5]} intensity={2} color={isDark ? "#4f46e5" : "#60a5fa"} />
 
-                    <Environment preset={isDark ? "city" : "studio"} blur={0.6} />
+                    {/* Environment removed to fix slow loading (blocks rendering until downloaded) */}
+                    {/* <Environment preset={isDark ? "city" : "studio"} blur={0.6} /> */}
 
                     <group scale={responsiveScale}>
                         {/* Main Bar Chart Widget */}
