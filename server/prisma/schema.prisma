@@ -13,6 +13,8 @@ model User {
   username String    @unique
   password String
   name     String?
+  resetPasswordToken   String?   @unique
+  resetPasswordExpires DateTime?
   createdAt DateTime @default(now())
   expenses Expense[]
 }

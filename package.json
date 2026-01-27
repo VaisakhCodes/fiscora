@@ -7,7 +7,7 @@
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "install:all": "npm install && cd client && npm install && cd ../server && npm install",
         "postinstall": "prisma generate --schema=./server/prisma/schema.prisma",
-        "build": "cd client && npm install && npm run build"
+        "build": "cd server && npm install && npx prisma db push && cd ../client && npm install && npm run build"
     },
     "dependencies": {
         "concurrently": "^8.2.0",
