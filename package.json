@@ -10,10 +10,10 @@
         "build": "npx prisma db push --schema=./server/prisma/schema.prisma --accept-data-loss && cd client && npm install && npm run build"
     },
     "dependencies": {
-        "concurrently": "^8.2.0",
         "@prisma/client": "^5.22.0",
         "bcrypt": "^6.0.0",
         "compression": "^1.8.1",
+        "concurrently": "^8.2.0",
         "cors": "^2.8.6",
         "dotenv": "^17.2.3",
         "express": "^5.2.1",
@@ -21,7 +21,8 @@
         "helmet": "^8.1.0",
         "joi": "^18.0.2",
         "jsonwebtoken": "^9.0.3",
-        "morgan": "^1.10.1"
+        "morgan": "^1.10.1",
+        "nodemailer": "^7.0.13"
     },
     "devDependencies": {
         "prisma": "^5.22.0"
