@@ -141,7 +141,8 @@ export default function ThreeHero() {
         <div className="w-full h-full relative cursor-move">
             <Canvas
                 shadows
-                dpr={[1, 2]}
+                dpr={[1, 1.5]} // Cap pixel ratio for performance
+                performance={{ min: 0.5 }} // Allow degrading quality on slow devices
                 camera={{ position: [0, 2, 7], fov: 40 }}
                 gl={{ alpha: true, antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
                 className="rounded-3xl"
@@ -149,7 +150,7 @@ export default function ThreeHero() {
                 <Suspense fallback={<Loader />}>
                     {/* Dynamic Lighting */}
                     <ambientLight intensity={isDark ? 0.4 : 0.7} />
-                    <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={1.5} castShadow shadow-mapSize={[1024, 1024]} />
+                    <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={1.5} castShadow shadow-mapSize={[512, 512]} />
                     <pointLight position={[-5, 5, -5]} intensity={1} color={isDark ? "#4f46e5" : "#60a5fa"} />
 
                     <Environment preset={isDark ? "city" : "studio"} blur={0.6} />
@@ -181,6 +182,7 @@ export default function ThreeHero() {
                         scale={15}
                         blur={2.5}
                         far={5}
+                        resolution={512} // Reduced from default (likely 1024) for speed
                         color={isDark ? "#000000" : "#9ca3af"}
                     />
                 </Suspense>
