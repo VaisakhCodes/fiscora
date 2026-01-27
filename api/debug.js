@@ -1,3 +1,3 @@
-export default function handler(req, res) {
-    res.status(200).json({ status: 'ok', message: 'Debug endpoint working', syntax: 'ES Module' });
-}
+module.exports = (req, res) => {
+    res.status(200).json({ status: 'ok', message: 'Debug endpoint working', syntax: 'CommonJS' });
+};
