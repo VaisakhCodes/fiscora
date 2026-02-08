@@ -4,7 +4,9 @@ const nodemailer = require('nodemailer');
 // For production: Use environment variables
 // For development (fallback): Log to console if no credentials
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Or use 'host', 'port' for other providers
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.EMAIL_PORT || '587'),
+    secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
