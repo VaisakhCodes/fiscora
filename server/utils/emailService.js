@@ -25,7 +25,7 @@ const sendPasswordResetEmail = async (email, resetUrl) => {
     }
 
     const mailOptions = {
-        from: `"Fiscora Security" <${process.env.EMAIL_USER}>`,
+        from: `"Fiscora Security" <${process.env.EMAIL_FROM || process.env.EMAIL_USER}>`,
         to: email,
         subject: 'Reset your Fiscora password',
         html: `
